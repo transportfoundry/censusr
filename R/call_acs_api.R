@@ -9,12 +9,18 @@
 #' @param geoids a vector of FIPS codes; must be at least to the county (5-digit)
 #' level, and can accept down to block groups (12-digit).
 #'
+#' @param year the final year of the ACS aggregation period. Default `2013`
+#'
+#' @param period the length of the ACS aggregation period (1, 3, or 5 years).
+#'   Default `5`
+#'
+#'
 #' @return a data_frame with each requested variable at each requested geography.
 #'
 #' @export
 #' @import dplyr
 #' @import httr
-call_acs_api <- function(variables_to_get, geoids) {
+call_census_api <- function(variables_to_get, geoids, year = 2013, period = 5) {
 
   # parse geoid
   split_geo <- function(geoid) {
@@ -27,11 +33,10 @@ call_acs_api <- function(variables_to_get, geoids) {
   call_api_once <- function(variables_to_get, geoid) {
     newgeo <- split_geo(geoid)
     st <- newgeo$st; co <- newgeo$co; tr <- newgeo$tr; bg <- newgeo$bg;
-
-    # if using block groups
     if(bg != ""){
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/", year,
+        "/acs", period, "?get=",
         paste(variables_to_get, collapse = ","),
         "&for=block+group:", bg,
         "&in=state:", st,
@@ -40,10 +45,11 @@ call_acs_api <- function(variables_to_get, geoids) {
         "&key=1209214b319264ae3163b6d262dda4106e5c77f0",
         sep = ""
       )
-    # if using tracts
+      # if using tracts
     } else if(tr != ""){
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/", year,
+        "/acs", period, "?get=",
         paste(variables_to_get, collapse = ","),
         "&for=tract:", tr,
         "&in=state:", st,
@@ -51,10 +57,11 @@ call_acs_api <- function(variables_to_get, geoids) {
         "&key=1209214b319264ae3163b6d262dda4106e5c77f0",
         sep = ""
       )
-    # if using counties
+      # if using counties
     } else {
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/", year,
+        "/acs", period, "?get=",
         paste(variables_to_get, collapse = ","),
         "&for=county:", co,
         "&in=state:", st,
@@ -80,7 +87,9 @@ call_acs_api <- function(variables_to_get, geoids) {
   # Call hit_api_once for each variable to get
   all_vars <- do.call(
     "rbind",
-    lapply(geoids, function(geoid) call_api_once(variables_to_get, geoid))
+    lapply(geoids, function(geoid)
+      call_api_once(variables_to_get, geoid, year, period)
+    )
   )
 
   # Keep geoid and variable columns (throw out others)
