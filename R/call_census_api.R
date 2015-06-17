@@ -30,7 +30,7 @@ call_census_api <- function(variables_to_get, geoids) {
     # if using block groups
     if(bg != ""){
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/2010/sf1?get=",
         paste(variables_to_get, collapse = ","),
         "&for=block+group:", bg,
         "&in=state:", st,
@@ -42,7 +42,7 @@ call_census_api <- function(variables_to_get, geoids) {
     # if using tracts
     } else if(tr != ""){
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/2010/sf1?get=",
         paste(variables_to_get, collapse = ","),
         "&for=tract:", tr,
         "&in=state:", st,
@@ -53,7 +53,7 @@ call_census_api <- function(variables_to_get, geoids) {
     # if using counties
     } else {
       url <- paste(
-        "http://api.census.gov/data/2013/acs5?get=",
+        "http://api.census.gov/data/2010/sf1?get=",
         paste(variables_to_get, collapse = ","),
         "&for=county:", co,
         "&in=state:", st,
@@ -61,7 +61,6 @@ call_census_api <- function(variables_to_get, geoids) {
         sep = ""
       )
     }
-
 
     # Gives back a list of lists; first list has the headers
     response <- httr::content(httr::GET(url))
