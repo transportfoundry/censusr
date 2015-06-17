@@ -18,10 +18,10 @@ call_acs_api <- function(variables_to_get, geoids) {
 
   # parse geoid
   split_geo <- function(geoid) {
-    list(st = substr(geoid,1,2),
-         co = substr(geoid,3,5),
-         tr = substr(geoid,6, 11),
-         bg = substr(geoid,12, 12))
+    list(st = substr(geoid, 1, 2),
+         co = substr(geoid, 3, 5),
+         tr = substr(geoid, 6, 11),
+         bg = substr(geoid, 12, 12))
   }
 
   call_api_once <- function(variables_to_get, geoid) {
