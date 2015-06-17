@@ -4,7 +4,7 @@
 \alias{call_acs_api}
 \title{Retrieve data from the Census ACS API}
 \usage{
-call_acs_api(variables_to_get, geoids)
+call_acs_api(variables_to_get, geoids, year = 2013, period = 5)
 }
 \arguments{
 \item{variables_to_get}{the variable name for the Census API call,
@@ -12,6 +12,11 @@ defined at \url{http://api.census.gov/}}
 
 \item{geoids}{a vector of FIPS codes; must be at least to the county (5-digit)
 level, and can accept down to block groups (12-digit).}
+
+\item{year}{the final year of the ACS aggregation period. Default `2013`}
+
+\item{period}{the length of the ACS aggregation period (1, 3, or 5 years).
+  Default `5`}
 }
 \value{
 a data_frame with each requested variable at each requested geography.
