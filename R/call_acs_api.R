@@ -20,7 +20,7 @@
 #' @export
 #' @import dplyr
 #' @import httr
-call_census_api <- function(variables_to_get, geoids, year = 2013, period = 5) {
+call_acs_api <- function(variables_to_get, geoids, year = 2013, period = 5) {
 
   # parse geoid
   split_geo <- function(geoid) {
@@ -30,7 +30,7 @@ call_census_api <- function(variables_to_get, geoids, year = 2013, period = 5) {
          bg = substr(geoid, 12, 12))
   }
 
-  call_api_once <- function(variables_to_get, geoid) {
+  call_api_once <- function(variables_to_get, geoid, year, period) {
     newgeo <- split_geo(geoid)
     st <- newgeo$st; co <- newgeo$co; tr <- newgeo$tr; bg <- newgeo$bg;
     if(bg != ""){
