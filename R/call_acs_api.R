@@ -1,6 +1,7 @@
-#' Retrieve data from the Census API
+#' Retrieve data from the Census ACS API
 #'
-#' Returns Census data for the 2010 SF1 for requested variables and geographies.
+#' Returns Census data for the 2008-2013 5-year ACS aggregation for requested
+#' variables at requested geographies.
 #'
 #' @param variables_to_get the variable name for the Census API call,
 #' defined at \url{http://api.census.gov/}
@@ -13,7 +14,7 @@
 #' @export
 #' @import dplyr
 #' @import httr
-call_census_api <- function(variables_to_get, geoids) {
+call_acs_api <- function(variables_to_get, geoids) {
 
   # parse geoid
   split_geo <- function(geoid) {
