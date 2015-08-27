@@ -20,15 +20,30 @@ call_census_api <- function(variables_to_get, geoids) {
     list(st = substr(geoid, 1, 2),
          co = substr(geoid, 3, 5),
          tr = substr(geoid, 6, 11),
-         bg = substr(geoid, 12, 12))
+         bg = substr(geoid, 12, 12),
+         bl = substr(geoid, 12, 15)
+         )
   }
 
   call_api_once <- function(variables_to_get, geoid) {
     newgeo <- split_geo(geoid)
-    st <- newgeo$st; co <- newgeo$co; tr <- newgeo$tr; bg <- newgeo$bg;
+    st <- newgeo$st; co <- newgeo$co; tr <- newgeo$tr;
+    bg <- newgeo$bg; bl <- newgeo$bl
+
 
     # if using block groups
-    if(bg != ""){
+    if(bl != ""){
+      url <- paste(
+        "http://api.census.gov/data/2010/sf1?get=",
+        paste(variables_to_get, collapse = ","),
+        "&for=block:", bl,
+        "&in=state:", st,
+        "+county:", co,
+        "+tract:", tr,
+        "&key=1209214b319264ae3163b6d262dda4106e5c77f0",
+        sep = ""
+      )
+    } else if(bg != ""){
       url <- paste(
         "http://api.census.gov/data/2010/sf1?get=",
         paste(variables_to_get, collapse = ","),
