@@ -4,14 +4,24 @@
 \alias{call_census_api}
 \title{Retrieve data from the Census API}
 \usage{
-call_census_api(variables_to_get, geoids)
+call_census_api(variables_to_get, geoids, data_source = c("sf1", "acs"),
+  year = 2013, period = 5)
 }
 \arguments{
 \item{variables_to_get}{the variable name for the Census API call,
 defined at \url{http://api.census.gov/}}
 
-\item{geoids}{a vector of FIPS codes; must be at least to the county (5-digit)
-level, and can accept down to block groups (12-digit).}
+\item{geoids}{A character vector of FIPS codes; must be at least to the
+county (5-digit) level, and can accept down to blocks (15-digit).}
+
+\item{data_source}{A string identifying whether the SF1 (decennial census) or
+ACS data is desired.}
+
+\item{year}{If \code{data_source = "acs"}, the final year of the summary
+period. Default is \code{2013}.}
+
+\item{period}{If \code{data_source = "acs"}, the length of aggregation period.
+  Default is \code{5}, or a 5-year aggregation table.}
 }
 \value{
 a data_frame with each requested variable at each requested geography.
