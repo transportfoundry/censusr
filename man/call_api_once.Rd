@@ -4,13 +4,22 @@
 \alias{call_api_once}
 \title{Call Census API for a set of variables}
 \usage{
-call_api_once(variables_to_get, geoid, call_start)
+call_api_once(variables_to_get, geoid, data_source, year, period)
 }
 \arguments{
 \item{variables_to_get}{the variable name for the Census API call,
 defined at \url{http://api.census.gov/}}
 
 \item{geoid}{A character string with a FIPS code, between 2 and 15 digits long.}
+
+\item{data_source}{A string identifying whether the SF1 (decennial census) or
+ACS data is desired.}
+
+\item{year}{If \code{data_source = "acs"}, the final year of the summary
+period. Default is \code{2013}.}
+
+\item{period}{If \code{data_source = "acs"}, the length of aggregation period.
+  Default is \code{5}, or a 5-year aggregation table.}
 }
 \value{
 A code{data.frame} with the requested variables at the requested

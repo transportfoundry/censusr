@@ -26,7 +26,7 @@ call_census_api <- function(variables_to_get, geoids,
   all_vars <- do.call(
     "rbind",
     lapply(geoids, function(geoid)
-      call_api_once(variables_to_get, geoid, data_source)
+      call_api_once(variables_to_get, geoid, data_source, year, period)
     )
   )
 
@@ -50,7 +50,7 @@ call_census_api <- function(variables_to_get, geoids,
 #'
 #' @importFrom httr content GET
 #'
-call_api_once <- function(variables_to_get, geoid, data_source) {
+call_api_once <- function(variables_to_get, geoid, data_source, year, period) {
 
   # construct primary url depending on requested dataset
   if(data_source == "sf1"){
