@@ -7,12 +7,10 @@
 call_api_once(variables_to_get, geoid, call_start)
 }
 \arguments{
-\item{variables_to_get}{the variable name for the Census API call, defined at
-\url{http://api.census.gov/}}
+\item{variables_to_get}{the variable name for the Census API call,
+defined at \url{http://api.census.gov/}}
 
-\item{geoid}{a single FIPS code.}
-
-\item{call_start}{A formatted url prefix defining the dataset.}
+\item{geoid}{A character string with a FIPS code, between 2 and 15 digits long.}
 }
 \value{
 A code{data.frame} with the requested variables at the requested
@@ -20,6 +18,6 @@ A code{data.frame} with the requested variables at the requested
 }
 \description{
 This is an internal function and is not intended for users. See instead
-\link{call_census_api}
+\link{call_census_api}.
 }
 

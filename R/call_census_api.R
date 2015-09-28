@@ -40,12 +40,10 @@ call_census_api <- function(variables_to_get, geoids,
 #' Call Census API for a set of variables
 #'
 #' This is an internal function and is not intended for users. See instead
-#' \link{call_census_api}
+#' \link{call_census_api}.
 #'
-#' @param variables_to_get the variable name for the Census API call, defined at
-#'   \url{http://api.census.gov/}
-#' @param geoid a single FIPS code.
-#' @param call_start A formatted url prefix defining the dataset.
+#' @inheritParams call_census_api
+#' @param geoid A character string with a FIPS code, between 2 and 15 digits long.
 #'
 #' @return A code{data.frame} with the requested variables at the requested
 #'   geography.
@@ -94,8 +92,7 @@ call_api_once <- function(variables_to_get, geoid, data_source) {
 
 #' Construct a geography request string from a FIPS Code
 #'
-#' @param geoid A character string with a FIPS code, between 2 and 15 digits long.
-#'
+#' @inheritParams call_api_once
 #' @return A string with the FIPS formatted for an API request.
 #'
 get_geo_url <- function(geoid) {
