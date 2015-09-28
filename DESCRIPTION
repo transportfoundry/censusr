@@ -3,12 +3,14 @@ Type: Package
 Title: Collect data from the Census API
 Version: 0.0.0.9
 Date: 2015-06-12
-Authors@R: c(
-  person("Greg", "Macfarlane", email = "gregmacfarlane@gmail.com",  role = c("aut", "cre"))
-  person("Josie", "Kressner", email = "josie@transportfoundry.com",  role = c("aut", "cre"))
-)
-Description: This package uses the Census API to collect summary data tables for
-SF1 and ACS datasets at arbitrary geographies.
+Authors@R: as.person(c(
+    "Greg Macfarlane <gregmacfarlane@gmail.com> [aut, cre]",
+    "Josie Kressner <josie@transportfoundry.com> [aut]"
+  ))
+Description: This package uses the US Census API to collect summary data tables for
+    SF1 and ACS datasets at arbitrary geographies.
 License: MIT + file LICENSE
 LazyData: TRUE
-Imports: dplyr, httr
+Imports:
+    dplyr (>= 0.4.3),
+    httr (>= 1.0.0)
