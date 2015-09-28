@@ -4,7 +4,7 @@
 \alias{call_api_once}
 \title{Call Census API for a set of variables}
 \usage{
-call_api_once(variables_to_get, geoid, data_source, year, period)
+call_api_once(variables_to_get, geoid, data_source, year, period, api_key)
 }
 \arguments{
 \item{variables_to_get}{the variable name for the Census API call,
@@ -19,7 +19,10 @@ ACS data is desired.}
 period. Default is \code{2013}.}
 
 \item{period}{If \code{data_source = "acs"}, the length of aggregation period.
-  Default is \code{5}, or a 5-year aggregation table.}
+Default is \code{5}, or a 5-year aggregation table.}
+
+\item{api_key}{The user's Census API key (as a character string). You can get
+  a free key from [Census](http://api.census.gov/data/key_signup.html).}
 }
 \value{
 A code{data.frame} with the requested variables at the requested

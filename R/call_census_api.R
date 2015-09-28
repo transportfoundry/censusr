@@ -12,6 +12,8 @@
 #'   period. Default is \code{2013}.
 #' @param period If \code{data_source = "acs"}, the length of aggregation period.
 #'   Default is \code{5}, or a 5-year aggregation table.
+#' @param api_key The user's Census API key (as a character string). You can get
+#'   a free key from [Census](http://api.census.gov/data/key_signup.html).
 #'
 #' @return a data_frame with each requested variable at each requested geography.
 #'
@@ -19,7 +21,11 @@
 #' @importFrom dplyr select tbl_df
 call_census_api <- function(variables_to_get, geoids,
                             data_source = c("sf1", "acs"),
-                            year = 2013, period = 5) {
+                            year = 2013, period = 5, api_key = NULL){
+
+  if(is.null(api_key)){
+    stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
+  }
 
 
   # call_api_once for each requested geography
@@ -50,7 +56,8 @@ call_census_api <- function(variables_to_get, geoids,
 #'
 #' @importFrom httr content GET
 #'
-call_api_once <- function(variables_to_get, geoid, data_source, year, period) {
+call_api_once <- function(variables_to_get, geoid, data_source, year, period,
+                          api_key) {
 
   # construct primary url depending on requested dataset
   if(data_source == "sf1"){
@@ -71,8 +78,7 @@ call_api_once <- function(variables_to_get, geoid, data_source, year, period) {
   geo_string <- get_geo_url(geoid)
 
   # consruct api string
-  api_string = paste("&key=", "1209214b319264ae3163b6d262dda4106e5c77f0",
-                     sep = "")
+  api_string = paste("&key=", api_key, sep = "")
   # assemble url
   url <- paste(call_start, var_string, geo_string, api_string, sep = "")
 

@@ -5,7 +5,7 @@
 \title{Retrieve data from the Census API}
 \usage{
 call_census_api(variables_to_get, geoids, data_source = c("sf1", "acs"),
-  year = 2013, period = 5)
+  year = 2013, period = 5, api_key = NULL)
 }
 \arguments{
 \item{variables_to_get}{the variable name for the Census API call,
@@ -21,7 +21,10 @@ ACS data is desired.}
 period. Default is \code{2013}.}
 
 \item{period}{If \code{data_source = "acs"}, the length of aggregation period.
-  Default is \code{5}, or a 5-year aggregation table.}
+Default is \code{5}, or a 5-year aggregation table.}
+
+\item{api_key}{The user's Census API key (as a character string). You can get
+  a free key from [Census](http://api.census.gov/data/key_signup.html).}
 }
 \value{
 a data_frame with each requested variable at each requested geography.
