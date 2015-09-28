@@ -21,25 +21,12 @@ call_census_api <- function(variables_to_get, geoids,
                             data_source = c("sf1", "acs"),
                             year = 2013, period = 5) {
 
-  print(data_source)
-
-  # construct primary url depending on requested dataset
-  if(data_source == "sf1"){
-    # Census SF1 data
-    call_start <- "http://api.census.gov/data/2010/sf1?get="
-  } else if(data_source == "acs"){
-    # ACS summary tables
-    call_start <- paste(
-      "http://api.census.gov/data/", year,
-      "/acs", period, "?get=", sep = ""
-    )
-  }
 
   # call_api_once for each requested geography
   all_vars <- do.call(
     "rbind",
     lapply(geoids, function(geoid)
-      call_api_once(variables_to_get, geoid, call_start)
+      call_api_once(variables_to_get, geoid, data_source)
     )
   )
 
@@ -65,7 +52,19 @@ call_census_api <- function(variables_to_get, geoids,
 #'
 #' @importFrom httr content GET
 #'
-call_api_once <- function(variables_to_get, geoid, call_start) {
+call_api_once <- function(variables_to_get, geoid, data_source) {
+
+  # construct primary url depending on requested dataset
+  if(data_source == "sf1"){
+    # Census SF1 data
+    call_start <- "http://api.census.gov/data/2010/sf1?get="
+  } else if(data_source == "acs"){
+    # ACS summary tables
+    call_start <- paste(
+      "http://api.census.gov/data/", year,
+      "/acs", period, "?get=", sep = ""
+    )
+  }
 
   # construct variable url string
   var_string <- paste(variables_to_get, collapse = ",")
