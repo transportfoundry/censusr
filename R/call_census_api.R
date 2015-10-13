@@ -27,6 +27,12 @@ call_census_api <- function(variables_to_get, geoids,
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
 
+  if(!(period %in% c(1, 3, 5))){
+    stop("ACS tables are only available at 1, 3, and 5 year `period` aggregations.")
+  }
+
+
+
 
   # call_api_once for each requested geography
   all_vars <- do.call(
