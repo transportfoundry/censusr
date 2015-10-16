@@ -1,11 +1,15 @@
 #' Retrieve data from the Census API
 #'
-#' Returns Census data for the 2010 SF1 for requested variables and geographies.
+#' Returns Census data for the 2010 SF1 or ACS 2013-2015 1-, 3-, and 5-Yr
+#' for requested variables and geographies.
 #'
 #' @param variables_to_get the variable name for the Census API call,
-#' defined at \url{http://api.census.gov/}
+#'   defined at \url{http://api.census.gov/}
 #' @param geoids A character vector of FIPS codes; must be at least to the
 #'   county (5-digit) level, and can accept down to blocks (15-digit).
+#' @param allgeos (optional) A string identifying the type of geography to
+#'   collect data for that live within the geoids (i.e., "co", "tr",
+#'   "bg", "bl").
 #' @param data_source A string identifying whether the SF1 (decennial census) or
 #'   ACS data is desired.
 #' @param year If \code{data_source = "acs"}, the final year of the summary
@@ -18,8 +22,7 @@
 #' @return a data_frame with each requested variable at each requested geography.
 #'
 #' @export
-#' @importFrom dplyr select tbl_df
-call_census_api <- function(variables_to_get, geoids,
+call_census_api <- function(variables_to_get, geoids, allgeos = NULL,
                             data_source = c("sf1", "acs"),
                             year = 2013, period = 5, api_key = NULL){
 
@@ -27,20 +30,14 @@ call_census_api <- function(variables_to_get, geoids,
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
 
-
   # call_api_once for each requested geography
-  all_vars <- do.call(
+  do.call(
     "rbind",
     lapply(geoids, function(geoid)
-      call_api_once(variables_to_get, geoid, data_source, year, period, api_key)
+      call_api_once(variables_to_get, geoid, allgeos,
+                    data_source, year, period, api_key)
     )
   )
-
-  # Keep geoid and variable columns (throw out others)
-  col_indexes <- match(variables_to_get, names(all_vars))
-  all_vars <- dplyr::select(all_vars, geoid, col_indexes)
-
-  dplyr::tbl_df(all_vars)
 }
 
 #' Call Census API for a set of variables
@@ -55,9 +52,9 @@ call_census_api <- function(variables_to_get, geoids,
 #'   geography.
 #'
 #' @importFrom httr content GET
-#'
-call_api_once <- function(variables_to_get, geoid, data_source, year, period,
-                          api_key) {
+#' @importFrom dplyr select tbl_df
+call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
+                          period, api_key) {
 
   # construct primary url depending on requested dataset
   if(data_source == "sf1"){
@@ -75,24 +72,33 @@ call_api_once <- function(variables_to_get, geoid, data_source, year, period,
   var_string <- paste(variables_to_get, collapse = ",")
 
   # construct geo url string
-  geo_string <- get_geo_url(geoid)
+  geo_string <- get_geo_url(geoid, allgeos)
 
   # consruct api string
-  api_string = paste("&key=", api_key, sep = "")
+  api_string = paste0("&key=", api_key)
+
   # assemble url
-  url <- paste(call_start, var_string, geo_string, api_string, sep = "")
+  url <- paste0(call_start, var_string, geo_string, api_string)
 
-  # Gives back a list of lists; first list has the headers
+  # gives back a list of lists; convert to dataframe
   response <- httr::content(httr::GET(url))
-  header <- response[[1]]
-  values <- as.numeric(response[[2]])
 
-  # Build data frame
-  values <- lapply(values, function(x) ifelse(is.null(x), NA, x))
-  nicified_response <- data.frame(values, stringsAsFactors=FALSE)
-  names(nicified_response) <- header
-  nicified_response$geoid <- as.character(geoid)
-  return(nicified_response)
+  df <- data.frame(t(sapply(response, c)), stringsAsFactors = F)[-1,]
+  names(df) <- response[[1]]
+
+  # concatenate geoid
+  df$geoid <- paste0(df$state,
+                if("county" %in% names(df)) {df$county},
+                if("tract" %in% names(df)) {df$tract},
+                if("block group" %in% names(df)) {df$"block group"},
+                if("block" %in% names(df)) {df$block})
+
+  # Reorder with geoid as first column
+  col_indexes <- match(variables_to_get, names(df))
+  df <- dplyr::select(df, geoid, col_indexes)
+  df[,-1] <- as.numeric(unlist(df[,-1]))
+
+  return(dplyr::tbl_df(df))
 }
 
 
@@ -101,7 +107,7 @@ call_api_once <- function(variables_to_get, geoid, data_source, year, period,
 #' @inheritParams call_api_once
 #' @return A string with the FIPS formatted for an API request.
 #'
-get_geo_url <- function(geoid) {
+get_geo_url <- function(geoid, allgeos) {
 
   split_geo <- function(geoid) {
     list(
@@ -117,42 +123,76 @@ get_geo_url <- function(geoid) {
   st <- newgeo$st; co <- newgeo$co; tr <- newgeo$tr;
   bg <- newgeo$bg; bl <- newgeo$bl
 
-  if(bl != ""){
-    # if using blocks
-    paste(
-      "&for=block:", bl,
-      "&in=state:", st,
-      "+county:", co,
-      "+tract:", tr,
-      sep = ""
-    )
+  if(is.null(allgeos)) {  # if `allgeos` is not specified
+    if(bl != ""){
+      # blocks
+      paste0(
+        "&for=block:", bl,
+        "&in=state:", st,
+        "+county:", co,
+        "+tract:", tr
+      )
 
-  } else if(bg != ""){
-    # block groups
-    paste(
-      "&for=block+group:", bg,
-      "&in=state:", st,
-      "+county:", co,
-      "+tract:", tr,
-      sep = ""
-    )
+    } else if(bg != ""){
+      # block groups
+      paste0(
+        "&for=block+group:", bg,
+        "&in=state:", st,
+        "+county:", co,
+        "+tract:", tr
+      )
 
-  } else if(tr != ""){
-    # tracts
-    paste(
-      "&for=tract:", tr,
-      "&in=state:", st,
-      "+county:", co,
-      sep = ""
+    } else if(tr != ""){
+      # tracts
+      paste0(
+        "&for=tract:", tr,
+        "&in=state:", st,
+        "+county:", co
+      )
+    } else {
+      # counties
+      paste0(
+        "&for=county:", co,
+        "&in=state:", st
+      )
+    }
+  } else {  # if `allgeos` is specified
+    # get `for` part
+    map = data.frame(
+      abbr = c("co", "tr", "bg", "bl"),
+      full = c("county", "tract", "block+group", "block"),
+      stringsAsFactors = F
     )
-  } else {
-    # if using counties
-    paste(
-      "&for=county:", co,
-      "&in=state:", st,
-      sep = ""
-    )
+    pre = paste0("&for=",
+                 map[which(map$abbr == allgeos), 'full'],
+                 ":*")
+
+    # return pre + geoid
+    if(bg != ""){
+      # block groups
+      paste0(
+        pre,
+        "&in=block+group:", bg,
+        "+state:", st,
+        "+county:", co,
+        "+tract:", tr
+      )
+
+    } else if(tr != ""){
+      # tracts
+      paste0(
+        pre,
+        "&in=tract:", tr,
+        "+state:", st,
+        "+county:", co
+      )
+    } else {
+      # counties
+      paste0(
+        pre,
+        "&in=county:", co,
+        "+=state:", st
+      )
+    }
   }
-
-
 }
