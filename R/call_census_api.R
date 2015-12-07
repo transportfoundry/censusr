@@ -5,6 +5,9 @@
 #'
 #' @param variables_to_get the variable name for the Census API call,
 #'   defined at \url{http://api.census.gov/}
+#' @param names A character vector of the same length as \code{variables_to_get}
+#'   giving the user-defined names for the variables (optional). Defaults to raw
+#'   API names.
 #' @param geoids A character vector of FIPS codes; must be at least to the
 #'   county (5-digit) level, and can accept down to blocks (15-digit).
 #' @param allgeos (optional) A string identifying the type of geography to
@@ -22,7 +25,9 @@
 #' @return a data_frame with each requested variable at each requested geography.
 #'
 #' @export
-call_census_api <- function(variables_to_get, geoids, allgeos = NULL,
+call_census_api <- function(variables_to_get,
+                            names = NULL,
+                            geoids, allgeos = NULL,
                             data_source = c("sf1", "acs"),
                             year = 2013, period = 5, api_key = NULL){
 
@@ -30,14 +35,30 @@ call_census_api <- function(variables_to_get, geoids, allgeos = NULL,
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
 
+
   # call_api_once for each requested geography
-  do.call(
+  d <- do.call(
     "rbind",
     lapply(geoids, function(geoid)
       call_api_once(variables_to_get, geoid, allgeos,
                     data_source, year, period, api_key)
     )
   )
+
+  if(is.null(names)){
+    message(
+      "Returning raw variable names; pass `names` vector for user-specified names"
+    )
+  } else if(length(variables_to_get) != length(names)){
+    warning(
+      "length(names) must equal length(variables_to_get); returning raw variable names"
+      )
+    } else {
+    names(d) <- c("geoid", names)
+  }
+
+
+  return(d)
 }
 
 #' Call Census API for a set of variables
