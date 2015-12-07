@@ -7,10 +7,14 @@ Authors@R: as.person(c(
     "Greg Macfarlane <gregmacfarlane@gmail.com> [aut, cre]",
     "Josie Kressner <josie@transportfoundry.com> [aut]"
   ))
-Description: This package uses the US Census API to collect summary data tables for
-    SF1 and ACS datasets at arbitrary geographies.
+Description: This package uses the US Census API to collect summary data tables
+    for SF1 and ACS datasets at arbitrary geographies.
 License: MIT + file LICENSE
 LazyData: TRUE
-Imports:
+Depends:
     dplyr (>= 0.4.3),
     httr (>= 1.0.0)
+Suggests:
+    knitr
+VignetteBuilder: knitr
+RoxygenNote: 5.0.0

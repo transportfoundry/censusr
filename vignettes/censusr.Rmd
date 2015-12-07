@@ -1,0 +1,72 @@
+---
+title: "censusr"
+author: ""
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The Census has made a very nice API for data scientists to access their data tables.
+The `censusr` package will help R users access this API in a convenient and
+R-like way.
+
+The API works by sending a specially-formatted URL to the the Census API server,
+which returns an XML or JSON document containing the requested information. In 
+practice, any table available on American FactFinder is available through the API,
+though the user will need to find the raw name for the variable in the Census API
+[guide](http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html).
+
+
+Users of this package will need to request an API key, which is available for 
+free from the Census Bureau on request. Go to
+[http://api.census.gov/data/key_signup.html](http://api.census.gov/data/key_signup.html)
+to register.
+```{r api, echo = FALSE}
+api_key = "1209214b319264ae3163b6d262dda4106e5c77f0"
+```
+
+
+```{r library}
+library(censusr)
+```
+
+The package works by sending a list of requested variables and a list of geographies.
+The call below requests the number of households owning 0, 1, 2, 3, or 4 or more 
+vehicles in Wake County, North Carolina (`geoid = 37183`). We specify that we want this table for 2012 5-year summary level.
+
+```{r censustables}
+call_census_api(
+  paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
+  names = c(0:4), geoids = "37183",  
+  data_source = "acs", year =  2012, period = 5, 
+  api_key = api_key
+) 
+```
+
+We can use the `allgeos` argument to say that we actually want these variables for *all* census tracts within Wake County.
+
+```{r allgeos}
+est <- call_census_api(
+  paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
+  names = paste0("est_", c(0:4)), geoids = "37183",  allgeos = "tr",
+  data_source = "acs", year =  2012, period = 5, 
+  api_key = api_key
+) 
+est
+```
+
+If we want the margins of error on this table instead of the estimates, we can
+change the variable to call the `M` type instead of the `E` type.
+
+```{r margins}
+moe <- call_census_api(
+  paste("B08201_", sprintf("%03d", 2:6),  "M", sep = ""),
+  names = paste0("moe_", c(0:4)), geoids = "37183",  allgeos = "tr",
+  data_source = "acs", year =  2012, period = 5, 
+  api_key = api_key
+) 
+moe
+```
