@@ -21,6 +21,9 @@ Census API
 [guide](http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html).
 
 # Setup
+These instructions are modified from hadley's 
+[API best practices documentation](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html).
+
 1. Users of this package will need to request an API key, which is available for 
 free from the Census Bureau on request. Go to
 [http://api.census.gov/data/key_signup.html](http://api.census.gov/data/key_signup.html)
@@ -73,7 +76,7 @@ geographies. The call below requests the number of households owning 0, 1, 2, 3,
 or 4 or more vehicles in Wake County, North Carolina (`geoid = 37183`). We
 specify that we want this table for 2012 5-year summary level.
 
-```{r censustables}
+```{r censustables, purl = FALSE}
 library(censusr)
 call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
@@ -84,7 +87,7 @@ call_census_api(
 We can use the `allgeos` argument to say that we actually want these variables
 for *all* census tracts within Wake County.
 
-```{r allgeos}
+```{r allgeos, purl = FALSE}
 est <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
   names = paste0("est_", c(0:4)), geoids = "37183",  allgeos = "tr",
@@ -95,7 +98,7 @@ est
 If we want the margins of error on this table instead of the estimates, we can
 change the variable to call the `M` type instead of the `E` type.
 
-```{r margins}
+```{r margins, purl=FALSE}
 moe <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "M", sep = ""),
   names = paste0("moe_", c(0:4)), geoids = "37183",  allgeos = "tr",
