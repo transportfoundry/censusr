@@ -1,20 +1,21 @@
 #' Retrieve data from the Census API
 #'
 #' Returns Census data for the 2010 SF1 or ACS 2013-2015 1-, 3-, and 5-Yr
-#' for requested variables and geographies.
+#' aggregations for requested variables and geographies.
 #'
 #' @details See \code{vignette('censusr', package = 'censusr')} for examples.
 #'
-#' @param variables_to_get the variable name for the Census API call,
-#'   defined at \url{http://api.census.gov/}
+#' @param variables_to_get A character vector of the desired variable names for
+#'   the Census API call, defined at \url{http://api.census.gov/}
 #' @param names A character vector of the same length as \code{variables_to_get}
 #'   giving the user-defined names for the variables (optional). Defaults to raw
 #'   API names.
 #' @param geoids A character vector of FIPS codes; must be at least to the
 #'   county (5-digit) level, and can accept down to blocks (15-digit).
-#' @param allgeos (optional) A string identifying the type of geography to
-#'   collect data for that live within the geoids (i.e., "co", "tr",
-#'   "bg", "bl").
+#' @param allgeos (optional) A string identifying the type of geography for
+#'   which to collect data within the the requested \code{geoids}. Must be one
+#'   of \code{c('co', 'tr', 'bg', 'bl')}. For instance, if \code{allgeos =
+#'   "bg"}, will return all block groups within the given \code{geoids}.
 #' @param data_source A string identifying whether the SF1 (decennial census) or
 #'   ACS data is desired.
 #' @param year If \code{data_source = "acs"}, the final year of the summary
