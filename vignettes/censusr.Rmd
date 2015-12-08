@@ -9,52 +9,86 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The Census has made a very nice API for data scientists to access their data tables.
-The `censusr` package will help R users access this API in a convenient and
-R-like way.
+The Census has made a very nice API for data scientists to access their data
+tables. The `censusr` package will help R users access this API in a convenient
+and R-like way.
 
 The API works by sending a specially-formatted URL to the the Census API server,
 which returns an XML or JSON document containing the requested information. In 
-practice, any table available on American FactFinder is available through the API,
-though the user will need to find the raw name for the variable in the Census API
+practice, any table available on American FactFinder is available through the
+API, though the user will need to find the raw name for the variable in the
+Census API 
 [guide](http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html).
 
-
-Users of this package will need to request an API key, which is available for 
+# Setup
+1. Users of this package will need to request an API key, which is available for 
 free from the Census Bureau on request. Go to
 [http://api.census.gov/data/key_signup.html](http://api.census.gov/data/key_signup.html)
-to register.
-```{r api, echo = FALSE}
-api_key = "1209214b319264ae3163b6d262dda4106e5c77f0"
+to register. Copy this token to your clipboard.
+
+2. Identify your home directory. If you are not sure what it is, enter 
+`normalizePath("~/")` in an R session. If in RStudio, use the R console.
+
+3. Create a new text file. If in RStudio, do File > New File > Text file.
+
+4. Create a line like this:
+
+```
+CENSUS_TOKEN=blahblahblahblahblahblah
+
 ```
 
+where the name `CENSUS_TOKEN` reminds you which API this is for and 
+`blahblahblahblahblahblah` is your token, pasted from the clipboard. Make sure 
+the last line in the file is empty. (If it is not empty, R will silently fail 
+to load the file. If you're using an editor that shows line numbers, there 
+should be two lines, where the second one is empty.)
 
-```{r library}
-library(censusr)
+5. Save this file in your home directory with the filename `.Renviron`. If 
+questioned, YES you do want to use a filename that begins with a dot `.`.
+
+Note that by default dotfiles are usually hidden. But within RStudio, the file 
+browser will make `.Renviron` visible and therefore easy to edit in the future.
+
+6. Restart R. `.Renviron` is processed only at the start of an R session.
+
+7. Use `Sys.getenv()` to access your token. For example,
+
+```{r library, eval=F}
+call_census_api(..., api_key = Sys.getenv("CENSUS_TOKEN") ...)
 ```
 
-The package works by sending a list of requested variables and a list of geographies.
-The call below requests the number of households owning 0, 1, 2, 3, or 4 or more 
-vehicles in Wake County, North Carolina (`geoid = 37183`). We specify that we want this table for 2012 5-year summary level.
+FAQ: Why define this environment variable via `.Renviron` instead of in 
+`.bash_profile` or `.bashrc`?
+
+Because there are many combinations of OS and ways of running R where the 
+`.Renviron` approach "just works"" and the bash stuff does not. When R is a 
+child process of, say, Emacs or RStudio, you can't always count on environment 
+variables being passed to R. Put them in an R-specific start-up file and save 
+yourself some grief.
+
+# Use
+The package works by sending a list of requested variables and a list of
+geographies. The call below requests the number of households owning 0, 1, 2, 3,
+or 4 or more vehicles in Wake County, North Carolina (`geoid = 37183`). We
+specify that we want this table for 2012 5-year summary level.
 
 ```{r censustables}
+library(censusr)
 call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
   names = c(0:4), geoids = "37183",  
-  data_source = "acs", year =  2012, period = 5, 
-  api_key = api_key
-) 
+  data_source = "acs", year =  2012, period = 5) 
 ```
 
-We can use the `allgeos` argument to say that we actually want these variables for *all* census tracts within Wake County.
+We can use the `allgeos` argument to say that we actually want these variables
+for *all* census tracts within Wake County.
 
 ```{r allgeos}
 est <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
   names = paste0("est_", c(0:4)), geoids = "37183",  allgeos = "tr",
-  data_source = "acs", year =  2012, period = 5, 
-  api_key = api_key
-) 
+  data_source = "acs", year =  2012, period = 5) 
 est
 ```
 
@@ -65,8 +99,6 @@ change the variable to call the `M` type instead of the `E` type.
 moe <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "M", sep = ""),
   names = paste0("moe_", c(0:4)), geoids = "37183",  allgeos = "tr",
-  data_source = "acs", year =  2012, period = 5, 
-  api_key = api_key
-) 
+  data_source = "acs", year =  2012, period = 5) 
 moe
 ```

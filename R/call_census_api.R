@@ -3,6 +3,8 @@
 #' Returns Census data for the 2010 SF1 or ACS 2013-2015 1-, 3-, and 5-Yr
 #' for requested variables and geographies.
 #'
+#' @details See \code{vignette('censusr', package = 'censusr')} for examples.
+#'
 #' @param variables_to_get the variable name for the Census API call,
 #'   defined at \url{http://api.census.gov/}
 #' @param names A character vector of the same length as \code{variables_to_get}
@@ -20,7 +22,9 @@
 #' @param period If \code{data_source = "acs"}, the length of aggregation period.
 #'   Default is \code{5}, or a 5-year aggregation table.
 #' @param api_key The user's Census API key (as a character string). You can get
-#'   a free key from [Census](http://api.census.gov/data/key_signup.html).
+#'   a free key from [Census](http://api.census.gov/data/key_signup.html). See
+#'   \code{vignette('censusr', package = 'censusr')} to setup a default key as
+#'   an environment variable.
 #'
 #' @return a data_frame with each requested variable at each requested geography.
 #'
@@ -29,12 +33,15 @@ call_census_api <- function(variables_to_get,
                             names = NULL,
                             geoids, allgeos = NULL,
                             data_source = c("sf1", "acs"),
-                            year = 2013, period = 5, api_key = NULL){
+                            year = 2013, period = 5,
+                            api_key = NULL){
 
-  if(is.null(api_key)){
+  if(Sys.getenv("CENSUS_TOKEN") == "" && is.null(api_key)){
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
-
+  if(is.null(api_key)) {
+    api_key = Sys.getenv("CENSUS_TOKEN")
+  }
 
   # call_api_once for each requested geography
   d <- do.call(
@@ -69,11 +76,8 @@ call_census_api <- function(variables_to_get,
 #' @inheritParams call_census_api
 #' @param geoid A character string with a FIPS code, between 2 and 15 digits long.
 #'
-#' @return A code{data.frame} with the requested variables at the requested
+#' @return A code{dplyr::tbl_df} with the requested variables at the requested
 #'   geography.
-#'
-#' @importFrom httr content GET
-#' @importFrom dplyr select tbl_df
 call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
                           period, api_key) {
 
