@@ -44,8 +44,10 @@ call_census_api <- function(variables_to_get,
     api_key = Sys.getenv("CENSUS_TOKEN")
   }
 
-  if(!(allgeos %in% c("co", "tr", "bg", "bl"))){
-    stop("`allgeos` must be one of c('co', 'tr', 'bg', 'bl')")
+  if(!is.null(allgeos)){
+    if(!(allgeos %in% c("co", "tr", "bg", "bl"))){
+      stop("`allgeos` must be one of c('co', 'tr', 'bg', 'bl')")
+    }
   }
 
   # call_api_once for each requested geography
