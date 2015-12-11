@@ -1,18 +1,21 @@
 #' Retrieve data from the Census API
 #'
 #' Returns Census data for the 2010 SF1 or ACS 2013-2015 1-, 3-, and 5-Yr
-#' for requested variables and geographies.
+#' aggregations for requested variables and geographies.
 #'
-#' @param variables_to_get the variable name for the Census API call,
-#'   defined at \url{http://api.census.gov/}
+#' @details See \code{vignette('censusr', package = 'censusr')} for examples.
+#'
+#' @param variables_to_get A character vector of the desired variable names for
+#'   the Census API call, defined at \url{http://api.census.gov/}
 #' @param names A character vector of the same length as \code{variables_to_get}
 #'   giving the user-defined names for the variables (optional). Defaults to raw
 #'   API names.
 #' @param geoids A character vector of FIPS codes; must be at least to the
 #'   county (5-digit) level, and can accept down to blocks (15-digit).
-#' @param allgeos (optional) A string identifying the type of geography to
-#'   collect data for that live within the geoids (i.e., "co", "tr",
-#'   "bg", "bl").
+#' @param allgeos (optional) A string identifying the type of geography for
+#'   which to collect data within the the requested \code{geoids}. Must be one
+#'   of \code{c('co', 'tr', 'bg', 'bl')}. For instance, if \code{allgeos =
+#'   "bg"}, will return all block groups within the given \code{geoids}.
 #' @param data_source A string identifying whether the SF1 (decennial census) or
 #'   ACS data is desired.
 #' @param year If \code{data_source = "acs"}, the final year of the summary
@@ -20,7 +23,9 @@
 #' @param period If \code{data_source = "acs"}, the length of aggregation period.
 #'   Default is \code{5}, or a 5-year aggregation table.
 #' @param api_key The user's Census API key (as a character string). You can get
-#'   a free key from [Census](http://api.census.gov/data/key_signup.html).
+#'   a free key from [Census](http://api.census.gov/data/key_signup.html). See
+#'   \code{vignette('censusr', package = 'censusr')} to setup a default key as
+#'   an environment variable.
 #'
 #' @return a data_frame with each requested variable at each requested geography.
 #'
@@ -29,12 +34,21 @@ call_census_api <- function(variables_to_get,
                             names = NULL,
                             geoids, allgeos = NULL,
                             data_source = c("sf1", "acs"),
-                            year = 2013, period = 5, api_key = NULL){
+                            year = 2013, period = 5,
+                            api_key = NULL){
 
-  if(is.null(api_key)){
+  if(Sys.getenv("CENSUS_TOKEN") == "" && is.null(api_key)){
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
+  if(is.null(api_key)) {
+    api_key = Sys.getenv("CENSUS_TOKEN")
+  }
 
+  if(!is.null(allgeos)){
+    if(!(allgeos %in% c("co", "tr", "bg", "bl"))){
+      stop("`allgeos` must be one of c('co', 'tr', 'bg', 'bl')")
+    }
+  }
 
   # call_api_once for each requested geography
   d <- do.call(

@@ -8,14 +8,15 @@ call_api_once(variables_to_get, geoid, allgeos, data_source, year, period,
   api_key)
 }
 \arguments{
-\item{variables_to_get}{the variable name for the Census API call,
-defined at \url{http://api.census.gov/}}
+\item{variables_to_get}{A character vector of the desired variable names for
+the Census API call, defined at \url{http://api.census.gov/}}
 
 \item{geoid}{A character string with a FIPS code, between 2 and 15 digits long.}
 
-\item{allgeos}{(optional) A string identifying the type of geography to
-collect data for that live within the geoids (i.e., "co", "tr",
-"bg", "bl").}
+\item{allgeos}{(optional) A string identifying the type of geography for
+which to collect data within the the requested \code{geoids}. Must be one
+of \code{c('co', 'tr', 'bg', 'bl')}. For instance, if \code{allgeos =
+"bg"}, will return all block groups within the given \code{geoids}.}
 
 \item{data_source}{A string identifying whether the SF1 (decennial census) or
 ACS data is desired.}
@@ -27,7 +28,9 @@ period. Default is \code{2013}.}
 Default is \code{5}, or a 5-year aggregation table.}
 
 \item{api_key}{The user's Census API key (as a character string). You can get
-a free key from [Census](http://api.census.gov/data/key_signup.html).}
+a free key from [Census](http://api.census.gov/data/key_signup.html). See
+\code{vignette('censusr', package = 'censusr')} to setup a default key as
+an environment variable.}
 }
 \value{
 A code{data.frame} with the requested variables at the requested

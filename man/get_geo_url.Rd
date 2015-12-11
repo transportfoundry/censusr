@@ -9,9 +9,10 @@ get_geo_url(geoid, allgeos)
 \arguments{
 \item{geoid}{A character string with a FIPS code, between 2 and 15 digits long.}
 
-\item{allgeos}{(optional) A string identifying the type of geography to
-collect data for that live within the geoids (i.e., "co", "tr",
-"bg", "bl").}
+\item{allgeos}{(optional) A string identifying the type of geography for
+which to collect data within the the requested \code{geoids}. Must be one
+of \code{c('co', 'tr', 'bg', 'bl')}. For instance, if \code{allgeos =
+"bg"}, will return all block groups within the given \code{geoids}.}
 }
 \value{
 A string with the FIPS formatted for an API request.
