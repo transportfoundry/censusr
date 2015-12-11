@@ -33,7 +33,7 @@ a free key from [Census](http://api.census.gov/data/key_signup.html). See
 an environment variable.}
 }
 \value{
-A code{dplyr::tbl_df} with the requested variables at the requested
+A code{data.frame} with the requested variables at the requested
   geography.
 }
 \description{

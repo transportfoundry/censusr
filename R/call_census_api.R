@@ -83,8 +83,11 @@ call_census_api <- function(variables_to_get,
 #' @inheritParams call_census_api
 #' @param geoid A character string with a FIPS code, between 2 and 15 digits long.
 #'
-#' @return A code{dplyr::tbl_df} with the requested variables at the requested
+#' @return A code{data.frame} with the requested variables at the requested
 #'   geography.
+#'
+#' @importFrom httr content GET
+#' @importFrom dplyr select tbl_df
 call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
                           period, api_key) {
 
