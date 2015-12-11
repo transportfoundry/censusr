@@ -1,10 +1,20 @@
 Package: censusr
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1
-Date: 2015-06-12
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Title: Collect data from the Census API
+Version: 0.0.1.0
+Date: 2015-12-07
+Authors@R: as.person(c(
+    "Greg Macfarlane <gregmacfarlane@gmail.com> [aut, cre]",
+    "Josie Kressner <josie@transportfoundry.com> [aut]"
+  ))
+Description: This package uses the US Census API to collect summary data tables
+    for SF1 and ACS datasets at arbitrary geographies.
+License: MIT + file LICENSE
 LazyData: TRUE
+Depends:
+    dplyr (>= 0.4.3),
+    httr (>= 1.0.0)
+Suggests:
+    knitr
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
