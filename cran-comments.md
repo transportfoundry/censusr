@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.2.2
+* local OS X install, R 3.2.3
 * win-builder (release)
 
 ## R CMD check results
@@ -16,10 +16,10 @@ There was 1 NOTE:
   Execution halted
   
   
-  Explanation - The user needs to obtain their own API key from the US Census Bureau to use
-  censusr. The vignette and function documentation contain instructions on how
-  to obtain the key and use it, but this prevents us from running examples in
-  environments that we do not maintain.
+  Explanation - The user needs to obtain their own API key from the US Census
+  Bureau to use censusr. The vignette and function documentation contain
+  instructions on how to obtain the key and use it, but this prevents us from
+  running examples in environments that we do not maintain.
   
 ## Downstream Dependencies
 This is a new package with no dependencies on CRAN.

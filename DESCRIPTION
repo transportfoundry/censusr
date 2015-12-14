@@ -1,6 +1,6 @@
 Package: censusr
 Type: Package
-Title: Collect data from the Census API
+Title: Collect Data from the Census API
 Version: 0.0.2
 Date: 2015-12-11
 Authors@R: as.person(c(
