@@ -8,6 +8,9 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(eval = F)
+```
 
 The Census has made a very nice API for data scientists to access their data
 tables. The `censusr` package will help R users access this API in a convenient
@@ -92,7 +95,6 @@ est <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "E", sep = ""),
   names = paste0("est_", c(0:4)), geoids = "37183",  allgeos = "tr",
   data_source = "acs", year =  2012, period = 5) 
-est
 ```
 
 If we want the margins of error on this table instead of the estimates, we can
@@ -103,5 +105,4 @@ moe <- call_census_api(
   paste("B08201_", sprintf("%03d", 2:6),  "M", sep = ""),
   names = paste0("moe_", c(0:4)), geoids = "37183",  allgeos = "tr",
   data_source = "acs", year =  2012, period = 5) 
-moe
 ```
