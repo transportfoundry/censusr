@@ -116,7 +116,9 @@ call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
   url <- paste0(call_start, var_string, geo_string, api_string)
 
   # gives back a list of lists; convert to dataframe
-  response <- httr::content(httr::GET(url))
+  r <- httr::GET(url)
+  httr::stop_for_status(r)
+  response <- httr::content(r)
 
   df <- data.frame(t(sapply(response, c)), stringsAsFactors = F)[-1,]
   names(df) <- response[[1]]
