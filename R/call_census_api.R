@@ -37,6 +37,13 @@ call_census_api <- function(variables_to_get,
                             year = 2013, period = 5,
                             api_key = NULL){
 
+  data_source <- match.arg(data_source)
+
+  if (stringr::str_sub(variables_to_get, -1, -1) %in% c("E", "M") &
+      data_source != "acs") {
+    stop('Your variables look like ACS variables. You have specified, or the call has defaulted to, the decennial census. Set `data_source = "acs"` in the function call.')
+  }
+
   if(Sys.getenv("CENSUS_TOKEN") == "" && is.null(api_key)){
     stop("censusr requires an API key. Request one at http://api.census.gov/data/key_signup.html")
   }
