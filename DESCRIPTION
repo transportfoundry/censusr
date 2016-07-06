@@ -8,6 +8,8 @@ Authors@R:  c(
     person("Josie", "Kressner", email = "josie@transportfoundry.com", role = "aut"))
 Description: Use the US Census API to collect summary data tables
     for SF1 and ACS datasets at arbitrary geographies.
+URL: https://github.com/transportfoundry/censusr
+BugReports: https://github.com/transportfoundry/censusr/issues
 License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
