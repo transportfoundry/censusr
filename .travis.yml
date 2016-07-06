@@ -1,0 +1,4 @@
+# From http://blog.rstudio.org/2016/03/09/r-on-travis-ci/
+language: r
+sudo: false
+cache: packages
