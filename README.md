@@ -1,5 +1,7 @@
 # censusr
 
+[![Build Status](https://travis-ci.org/transportfoundry/censusr.svg?branch=master)](https://travis-ci.org/transportfoundry/censusr)
+
 Access data hosted by the US Census Bureau.
 
 The Census has made a very nice API for data scientists to access their data
