@@ -29,6 +29,7 @@
 #'
 #' @return a data_frame with each requested variable at each requested geography.
 #'
+#' @importFrom stringr str_sub
 #' @export
 call_census_api <- function(variables_to_get,
                             names = NULL,
