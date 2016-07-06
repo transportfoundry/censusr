@@ -16,6 +16,7 @@ Depends:
     dplyr (>= 0.4.3),
     httr (>= 1.0.0)
 Suggests:
-    knitr
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 5.0.1
