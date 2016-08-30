@@ -1,5 +1,7 @@
 # censusr
 
+[![Join the chat at https://gitter.im/censusr/Lobby](https://badges.gitter.im/censusr/Lobby.svg)](https://gitter.im/censusr/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/transportfoundry/censusr.svg?branch=master)](https://travis-ci.org/transportfoundry/censusr)
 
 Access data hosted by the US Census Bureau.
