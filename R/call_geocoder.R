@@ -30,7 +30,7 @@ append_geoid <- function(address, geoid = 'bl') {
   }
 
   # Append onto database
-  address <- mutate(address, geoid = geoids)
+  address <- dplyr::mutate(address, geoid = geoids)
 
   # AABBBCCCCCCDEEE
   if (geoid == 'co') {
@@ -43,18 +43,20 @@ append_geoid <- function(address, geoid = 'bl') {
     end <- 15
   }
 
-  return(mutate(address, geoid = substr(geoid, 1, end)))
+  return(dplyr::mutate(address, geoid = substr(geoid, 1, end)))
 }
 
 
 #' Call gelocator for one address
+#' importFrom utils URLencode
+#' importFrom httr GET stop_for_status
 call_geolocator <- function(street, city, state) {
   # Build url
   call_start <- "https://geocoding.geo.census.gov/geocoder/geographies/address?"
 
   url <- paste0(
-    "street=", URLencode(street),
-    "&city=", URLencode(city),
+    "street=", utils::URLencode(street),
+    "&city=", utils::URLencode(city),
     "&state=", state
   )
 
