@@ -11,13 +11,14 @@
 #'   \code{geoid}.
 #'
 #' @examples
-#' airports <- data_frame("street" = "700 Catalina Dr", "city" = "Daytona Beach",
-#'                        "state" = "FL")
+#' airports <- data_frame(street = "700 Catalina Dr", city = "Daytona Beach",
+#'                        state = "FL")
 #' airports %>% append_geoid('tr')
 #'
 #' @importFrom dplyr mutate
 #' @export
 append_geoid <- function(address, geoid = 'bl') {
+
   # If street, city, or state columns are factors, convert them
   # Call for each row of the data
   geoids <- vector(mode="character", length = nrow(address))
@@ -48,6 +49,14 @@ append_geoid <- function(address, geoid = 'bl') {
 
 
 #' Call gelocator for one address
+#'
+#' @param street A character string indicating a street name and number
+#' @param city A character string indicating a city
+#' @param state A two-digit character string with a state postal code
+#'
+#' @return A character string representing the Census block of the supplied
+#'   address.
+#'
 #' importFrom utils URLencode
 #' importFrom httr GET stop_for_status
 call_geolocator <- function(street, city, state) {

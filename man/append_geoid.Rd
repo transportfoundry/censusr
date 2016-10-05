@@ -21,8 +21,8 @@ the original tibble with GEOIDs appended as a new column called
 Returns GEOID for 2010 geographies.
 }
 \examples{
-airports <- data_frame("street" = "700 Catalina Dr", "city" = "Daytona Beach",
-                       "state" = "FL")
+airports <- data_frame(street = "700 Catalina Dr", city = "Daytona Beach",
+                       state = "FL")
 airports \%>\% append_geoid('tr')
 
 }
