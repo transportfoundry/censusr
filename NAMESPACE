@@ -2,6 +2,7 @@
 
 export(append_geoid)
 export(call_census_api)
+export(call_geolocator)
 importFrom(dplyr,mutate)
 importFrom(dplyr,select)
 importFrom(dplyr,tbl_df)
