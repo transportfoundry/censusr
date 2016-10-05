@@ -22,7 +22,7 @@ append_geoid <- function(address, geoid = 'bl') {
   # If street, city, or state columns are factors, convert them
   # Call for each row of the data
   geoids <- vector(mode="character", length = nrow(address))
-  for (i in nrow(address)) {
+  for (i in 1:nrow(address)) {
     geoids[i] <- call_geolocator(
       as.character(address$street[i]),
       as.character(address$city[i]),
@@ -43,8 +43,10 @@ append_geoid <- function(address, geoid = 'bl') {
   } else {
     end <- 15
   }
+  address <- dplyr::mutate(address,
+    geoid = ifelse(is.na(geoid), NA_character_, substr(geoid, 1, end)))
 
-  return(dplyr::mutate(address, geoid = substr(geoid, 1, end)))
+  return(address)
 }
 
 
@@ -84,13 +86,13 @@ call_geolocator <- function(street, city, state) {
     message(paste0("Address (",
                    street, " ", city, " ", state,
                    ") returned no address matches. An NA was returned."))
-    return("NA")
-  } else if (length(response$result$addressMatches) != 1) {
-    message(paste0("Address (",
-                   street, " ", city, " ", state,
-                   ") returned more than one address match. The first match was returned."))
+    return(NA_character_)
+  } else {
+    if (length(response$result$addressMatches) > 1) {
+      message(paste0("Address (",
+                     street, " ", city, " ", state,
+                     ") returned more than one address match. The first match was returned."))
+    }
+    return(response$result$addressMatches[[1]]$geographies$`Census Blocks`[[1]]$GEOID)
   }
-
-  # Return
-  return(response$result$addressMatches[[1]]$geographies$`Census Blocks`[[1]]$GEOID)
 }
