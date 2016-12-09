@@ -3,7 +3,7 @@ Type: Package
 Title: Collect Data from the Census API
 Version: 0.0.2.9000
 Date: 2015-12-11
-Authors@R:  c(
+Authors@R: c(
     person("Greg", "Macfarlane", email = "gregmacfarlane@gmail.com", role = c("cre", "aut")),
     person("Josie", "Kressner", email = "josie@transportfoundry.com", role = "aut"))
 Description: Use the US Census API to collect summary data tables
@@ -19,5 +19,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.1.9000
 Imports: stringr
