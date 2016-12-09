@@ -4,7 +4,7 @@
 \alias{append_geoid}
 \title{Retrieve GEOID from the Census Geocoder by address}
 \usage{
-append_geoid(address, geoid = "bl")
+append_geoid(address, geoid_type = "bl")
 }
 \arguments{
 \item{address}{A tibble/data frame with (at a minimum, others can be present)
@@ -22,8 +22,9 @@ the original tibble with GEOIDs appended as a new column called
 Returns GEOID for 2010 geographies.
 }
 \examples{
-airports <- data_frame(street = "700 Catalina Dr", city = "Daytona Beach",
-                       state = "FL")
+airports <- dplyr::data_frame(
+  street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
+)
 airports \%>\% append_geoid('tr')
 }
 

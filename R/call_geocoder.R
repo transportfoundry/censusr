@@ -7,18 +7,18 @@
 #'   lon. Lat/lon columns take priority.
 #' @param geoid_type GEOID level to return, \code{c('co', 'tr', 'bg', 'bl')}.
 #'   Defaults to block.
-#'
 #' @return the original tibble with GEOIDs appended as a new column called
 #'   \code{geoid}.
 #'
 #' @examples
-#' airports <- data_frame(street = "700 Catalina Dr", city = "Daytona Beach",
-#'                        state = "FL")
+#' airports <- dplyr::data_frame(
+#'   street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
+#' )
 #' airports %>% append_geoid('tr')
 #'
 #' @importFrom dplyr mutate
 #' @export
-append_geoid <- function(address, geoid = 'bl') {
+append_geoid <- function(address, geoid_type = 'bl') {
 
   if ("lat" %in% colnames(address) && "lon" %in% colnames(address)) {
     # Call for each row of the data
@@ -43,11 +43,11 @@ append_geoid <- function(address, geoid = 'bl') {
   address <- dplyr::mutate(address, geoid = geoids)
 
   # AABBBCCCCCCDEEE
-  if (geoid == 'co') {
+  if (geoid_type == 'co') {
     end <- 5
-  } else if (geoid == 'tr') {
+  } else if (geoid_type == 'tr') {
     end <- 11
-  } else if (geoid == 'bg') {
+  } else if (geoid_type == 'bg') {
     end <- 12
   } else {
     end <- 15
