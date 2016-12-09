@@ -94,7 +94,7 @@ call_census_api <- function(variables_to_get,
 #' @return A code{data.frame} with the requested variables at the requested
 #'   geography.
 #'
-#' @importFrom httr content GET
+#' @importFrom httr content GET stop_for_status
 #' @importFrom dplyr select tbl_df
 call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
                           period, api_key) {
