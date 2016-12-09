@@ -14,7 +14,7 @@
 #' airports <- dplyr::data_frame(
 #'   street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
 #' )
-#' airports %>% append_geoid('tr')
+#' append_geoid(airports, 'tr')
 #'
 #' @importFrom dplyr mutate
 #' @export
