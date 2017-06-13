@@ -40,7 +40,7 @@ call_census_api <- function(variables_to_get,
 
   data_source <- match.arg(data_source)
 
-  if (stringr::str_sub(variables_to_get, -1, -1) %in% c("E", "M") &
+  if (any(stringr::str_sub(variables_to_get, -1, -1) %in% c("E", "M")) &
       data_source != "acs") {
     stop('Your variables look like ACS variables. You have specified, or the call has defaulted to, the decennial census. Set `data_source = "acs"` in the function call.')
   }
