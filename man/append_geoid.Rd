@@ -28,4 +28,3 @@ airports <- dplyr::data_frame(
 append_geoid(airports, 'tr')
 
 }
-

@@ -20,4 +20,3 @@ A string with the FIPS formatted for an API request.
 \description{
 Construct a geography request string from a FIPS Code
 }
-

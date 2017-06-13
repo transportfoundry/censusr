@@ -7,7 +7,7 @@
 #' @author Josie Kressner
 #'
 #' @details Applies a root sum of squared errors. See page A-14 of this
-#'   guide: http://www.census.gov/acs/www/Downloads/handbooks/ACSResearch.pdf
+#'   guide: https://www.census.gov/library/publications/2009/acs/researchers.html
 #'
 #' @examples
 #' x <- c(3, 5, 12, 4)
