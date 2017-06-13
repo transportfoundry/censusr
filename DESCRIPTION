@@ -1,7 +1,7 @@
 Package: censusr
 Type: Package
 Title: Collect Data from the Census API
-Version: 0.0.2.9000
+Version: 0.0.3
 Date: 2015-12-11
 Authors@R: c(
     person("Greg", "Macfarlane", email = "greg@transportfoundry.com", role = c("cre", "aut")),

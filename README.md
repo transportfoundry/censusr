@@ -13,11 +13,11 @@ which returns an XML or JSON document containing the requested information. In
 practice, any table available on American FactFinder is available through the
 API, though the user will need to find the raw name for the variable in the
 Census API 
-[guide](http://www.census.gov/data/developers/data-sets/acs-survey-5-year-data.html).
+[guide](http://api.census.gov/data/2015/acs5/subject/variables.html).
 
 ## Setup
 These instructions are modified from hadley's 
-[API best practices documentation](https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html).
+[API best practices documentation](https://cran.r-project.org/package=httr/vignettes/api-packages.html).
 
 1. Users of this package will need to request an API key, which is available for 
 free from the Census Bureau on request. Go to
