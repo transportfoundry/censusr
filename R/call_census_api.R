@@ -6,7 +6,7 @@
 #' @details See \code{vignette('censusr', package = 'censusr')} for examples.
 #'
 #' @param variables_to_get A character vector of the desired variable names for
-#'   the Census API call, defined at \url{http://api.census.gov/}
+#'   the Census API call, defined at \url{https://www.census.gov/data/developers/data-sets.html}
 #' @param names A character vector of the same length as \code{variables_to_get}
 #'   giving the user-defined names for the variables (optional). Defaults to raw
 #'   API names.
@@ -40,7 +40,7 @@ call_census_api <- function(variables_to_get,
 
   data_source <- match.arg(data_source)
 
-  if (stringr::str_sub(variables_to_get, -1, -1) %in% c("E", "M") &
+  if (any(stringr::str_sub(variables_to_get, -1, -1) %in% c("E", "M")) &
       data_source != "acs") {
     stop('Your variables look like ACS variables. You have specified, or the call has defaulted to, the decennial census. Set `data_source = "acs"` in the function call.')
   }
@@ -102,11 +102,11 @@ call_api_once <- function(variables_to_get, geoid, allgeos, data_source, year,
   # construct primary url depending on requested dataset
   if(data_source == "sf1"){
     # Census SF1 data
-    call_start <- "http://api.census.gov/data/2010/sf1?get="
+    call_start <- "https://api.census.gov/data/2010/sf1?get="
   } else if(data_source == "acs"){
     # ACS summary tables
     call_start <- paste(
-      "http://api.census.gov/data/", year,
+      "https://api.census.gov/data/", year,
       "/acs", period, "?get=", sep = ""
     )
   }

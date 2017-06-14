@@ -10,7 +10,7 @@ call_census_api(variables_to_get, names = NULL, geoids, allgeos = NULL,
 }
 \arguments{
 \item{variables_to_get}{A character vector of the desired variable names for
-the Census API call, defined at \url{http://api.census.gov/}}
+the Census API call, defined at \url{https://www.census.gov/data/developers/data-sets.html}}
 
 \item{names}{A character vector of the same length as \code{variables_to_get}
 giving the user-defined names for the variables (optional). Defaults to raw
@@ -48,4 +48,3 @@ aggregations for requested variables and geographies.
 \details{
 See \code{vignette('censusr', package = 'censusr')} for examples.
 }
-

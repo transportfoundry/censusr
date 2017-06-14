@@ -23,4 +23,3 @@ importFrom httr GET stop_for_status
 \description{
 Call gelocator for one address
 }
-

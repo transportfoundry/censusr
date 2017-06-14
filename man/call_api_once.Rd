@@ -9,7 +9,7 @@ call_api_once(variables_to_get, geoid, allgeos, data_source, year, period,
 }
 \arguments{
 \item{variables_to_get}{A character vector of the desired variable names for
-the Census API call, defined at \url{http://api.census.gov/}}
+the Census API call, defined at \url{https://www.census.gov/data/developers/data-sets.html}}
 
 \item{geoid}{A character string with a FIPS code, between 2 and 15 digits long.}
 
@@ -40,4 +40,3 @@ A code{data.frame} with the requested variables at the requested
 This is an internal function and is not intended for users. See instead
 \link{call_census_api}.
 }
-
