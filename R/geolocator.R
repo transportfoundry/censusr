@@ -11,10 +11,16 @@
 #'   \code{geoid}.
 #'
 #' @examples
+#' \dontrun{
 #' airports <- dplyr::data_frame(
 #'   street = "700 Catalina Dr", city = "Daytona Beach", state = "FL"
 #' )
 #' append_geoid(airports, 'tr')
+#' }
+#'
+#' @details
+#' It is possible in some situations for the geolocator API to return a 500 error.
+#' Repeating the call should avoid this.
 #'
 #' @importFrom dplyr mutate
 #' @export
