@@ -1,8 +1,8 @@
 Package: censusr
 Type: Package
 Title: Collect Data from the Census API
-Version: 0.0.3
-Date: 2017-06-13
+Version: 0.0.4
+Date: 2018-01-23
 Authors@R: c(
     person("Greg", "Macfarlane", email = "greg@transportfoundry.com", role = c("cre", "aut")),
     person("Josie", "Kressner", email = "josie@transportfoundry.com", role = "aut"))
@@ -17,7 +17,8 @@ Depends:
     httr (>= 1.0.0)
 Suggests:
     knitr,
-    rmarkdown
+    rmarkdown,
+    xml2
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Imports: stringr
