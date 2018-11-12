@@ -2,11 +2,12 @@
 
 [![Build Status](https://travis-ci.org/transportfoundry/censusr.svg?branch=master)](https://travis-ci.org/transportfoundry/censusr)
 
-> We have decided to deprecate censusr and instead use (and contribute) to 
+## Discontinued Development
+***We decided to deprecate censusr and instead use (and contribute) to 
 [tidycensus](https://github.com/walkerke/tidycensus). Censusr will remain on
-CRAN, but support will discontinue.
+CRAN, but support will discontinue.***
 
-
+## Censusr Description
 Access data hosted by the US Census Bureau.
 
 The Census has made a very nice API for data scientists to access their data
